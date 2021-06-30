@@ -150,6 +150,7 @@ class BSBIIndex:
             for i in td_pairs:
                 if i[1] == term:
                     posting.append(self.doc_id_map.__getitem__(i[0]))
+                    global i
                     i = ()
             index.append(self.term_id_map.__getitem__(term), posting)
             td_pairs = [i for i in td_pairs if i != ()]

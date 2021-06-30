@@ -110,6 +110,9 @@ class InvertedIndexWriter(InvertedIndex):
             List of docIDs where the term appears
         """
         byte_postings_list = self.postings_encoding.encoed(postings_list)
+        self.index_file.seek(offset=0, whence=2)
+        self.postings_dict[term] = (self.index_file.tell(), len(postings_list), len(byte_postings_list))
+        self.index_file.write(byte_postings_list)
 
 
 class InvertedIndexIterator(InvertedIndex):
@@ -144,8 +147,7 @@ class InvertedIndexIterator(InvertedIndex):
         ### End your code
 
     def delete_from_disk(self):
-        """Marks the index for deletion upon exit. Useful for temporary indices
-        """
+        """Marks the index for deletion upon exit. Useful for temporary indices"""
         self.delete_upon_exit = True
 
     def __exit__(self, exception_type, exception_value, traceback):
